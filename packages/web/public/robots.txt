@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Area riservata al personale del negozio
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://errevento.it/sitemap.xml
