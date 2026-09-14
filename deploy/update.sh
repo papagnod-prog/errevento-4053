@@ -102,8 +102,17 @@ run_as_user "cd '${APP}' && bun install --frozen-lockfile" && c_ok "ok"
 # ---------------------------------------------------------------------------
 step "4. Struttura del database (non cancella i dati)"
 # ---------------------------------------------------------------------------
-run_as_user "cd '${APP}/packages/web' && bun run db:push" \
-  && c_ok "ok" || c_err "db:push ha segnalato errori"
+if run_as_user "cd '${APP}/packages/web' && bun run db:push --force"; then
+  c_ok "ok"
+else
+  # Un push fallito lascia il sito senza le tabelle nuove: funziona a metà
+  # senza dirlo a nessuno. Meglio fermarsi qui, col sito ancora in piedi
+  # sulla versione precedente.
+  c_err "la struttura del database non è stata aggiornata: mi fermo"
+  c_err "il sito resta sulla versione precedente ($(git -C "$APP" log --oneline -1 "$PREV"))"
+  git -C "$APP" reset --hard --quiet "$PREV"
+  exit 1
+fi
 
 # ---------------------------------------------------------------------------
 step "5. Compilazione"

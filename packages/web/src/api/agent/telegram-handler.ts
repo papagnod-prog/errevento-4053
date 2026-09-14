@@ -77,13 +77,21 @@ async function saveSession(chatId: string, session: Session) {
     .onConflictDoUpdate({ target: schema.telegramSessions.chatId, set: values });
 }
 
-/** Registra l'id dell'update: Telegram rispedisce lo stesso webhook se non rispondiamo in fretta. */
+/**
+ * Registra l'id dell'update: Telegram rispedisce lo stesso webhook se non
+ * rispondiamo in fretta. Solo la chiave duplicata significa "già visto":
+ * ogni altro errore del database va segnalato, altrimenti il bot resterebbe
+ * muto senza lasciare traccia nei log.
+ */
 async function alreadyHandled(eventId: string) {
   try {
     await db.insert(schema.telegramEvents).values({ id: eventId });
     return false;
-  } catch {
-    return true;
+  } catch (error) {
+    const message = String(error);
+    if (/UNIQUE|PRIMARY KEY|SQLITE_CONSTRAINT/i.test(message)) return true;
+    console.error(`[telegram] database non raggiungibile: ${message}`);
+    return false;
   }
 }
 
