@@ -174,12 +174,11 @@ step "7. Backup notturno del database (03:10, conserva 30 giorni)"
 # ---------------------------------------------------------------------------
 cat > "/usr/local/bin/${SERVICE}-backup" <<BK
 #!/usr/bin/env bash
-# copia di sicurezza del database, coerente anche a servizio attivo
 set -euo pipefail
 OUT="${BACKUP}/errevento-\$(date +%F).db"
 rm -f "\$OUT"
-${BUN} -e "const{Database}=require('bun:sqlite');const d=new Database('${DATA}/errevento.db',{readonly:true});d.exec(\`VACUUM INTO '\${OUT}'\`);d.close()"
-find "${BACKUP}" -name 'errevento-*.db' -mtime +30 -delete
+${BUN} ${APP}/deploy/backup.ts ${DATA}/errevento.db "\$OUT" >/dev/null
+find ${BACKUP} -name 'errevento-*.db' -mtime +30 -delete
 BK
 chmod 755 "/usr/local/bin/${SERVICE}-backup"
 
