@@ -2,9 +2,9 @@ import type { RouterClient } from "@orpc/server";
 import { createApp } from "./__core/app";
 import { auth } from "./auth";
 import { readMedia, saveUpload } from "./lib/media";
-import { parseWebhook } from "./lib/whatsapp";
+import { parseUpdate } from "./lib/telegram";
 import { clientIp, recordView } from "./lib/traffic";
-import { handleWhatsappMessage } from "./agent/whatsapp-handler";
+import { handleTelegramMessage } from "./agent/telegram-handler";
 import { ping } from "./routes/ping";
 import { catalog } from "./routes/catalog";
 import { inquiries } from "./routes/inquiries";
@@ -85,33 +85,30 @@ app.post("/api/track", async (c) => {
   return c.body(null, 204);
 });
 
-// Webhook WhatsApp (Meta Cloud API): verifica del token in GET, messaggi in POST.
-app.get("/api/whatsapp", (c) => {
-  const mode = c.req.query("hub.mode");
-  const token = c.req.query("hub.verify_token");
-  const challenge = c.req.query("hub.challenge") ?? "";
-  const expected = process.env.WHATSAPP_VERIFY_TOKEN;
-  if (mode === "subscribe" && expected && token === expected) {
-    return c.text(challenge, 200);
+// Webhook Telegram: il bot di gestione del catalogo.
+// Telegram non fa una verifica in GET come Meta: autentica ogni chiamata con un
+// segreto nell'header, impostato insieme al webhook (deploy/telegram-webhook.ts).
+app.post("/api/telegram", async (c) => {
+  const secret = process.env.TELEGRAM_WEBHOOK_SECRET;
+  if (secret && c.req.header("x-telegram-bot-api-secret-token") !== secret) {
+    return c.text("Forbidden", 403);
   }
-  return c.text("Forbidden", 403);
-});
 
-app.post("/api/whatsapp", async (c) => {
   let payload: unknown = null;
   try {
     payload = await c.req.json();
   } catch {
-    return c.text("EVENT_RECEIVED", 200);
+    return c.body(null, 200);
   }
-  // Meta ritenta dopo ~20s: si risponde subito e si elabora dopo.
-  const messages = parseWebhook(payload);
-  for (const message of messages) {
-    void handleWhatsappMessage(message).catch((error) => {
-      console.error("[whatsapp] handler", error);
+
+  // Telegram ritenta se non riceve una risposta rapida: si risponde subito
+  // e l'agente elabora il messaggio dopo.
+  for (const message of parseUpdate(payload)) {
+    void handleTelegramMessage(message).catch((error) => {
+      console.error("[telegram] handler", error);
     });
   }
-  return c.text("EVENT_RECEIVED", 200);
+  return c.body(null, 200);
 });
 
 export default app;

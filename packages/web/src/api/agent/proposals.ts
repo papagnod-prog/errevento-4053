@@ -13,7 +13,7 @@ import {
 } from "../lib/catalog-write";
 import { formatEuro } from "./format";
 
-/** Dominio pubblico del sito: i link inviati su WhatsApp devono puntare lì. */
+/** Dominio pubblico del sito: i link inviati in chat devono puntare lì. */
 function siteUrl() {
   const url = process.env.SITE_URL ?? "https://errevento.it";
   return url.replace(/\/+$/, "");
@@ -21,7 +21,7 @@ function siteUrl() {
 
 /**
  * Ogni scrittura sul catalogo passa da una "proposta": l'agente la formula,
- * l'operatore la conferma su WhatsApp e solo allora viene applicata.
+ * l'operatore la conferma in chat e solo allora viene applicata.
  */
 
 export const proposalSchema = z.discriminatedUnion("kind", [

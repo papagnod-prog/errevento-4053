@@ -61,7 +61,7 @@ export const productImages = sqliteTable(
   (t) => [index("pi_product_idx").on(t.productId)],
 );
 
-/** Richieste informazioni inviate dal form pre-WhatsApp */
+/** Richieste informazioni inviate dal form prima di aprire WhatsApp */
 export const inquiries = sqliteTable("inquiries", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
@@ -86,11 +86,11 @@ export const settings = sqliteTable("settings", {
 });
 
 /**
- * Stato delle conversazioni WhatsApp dell'agente catalogo.
+ * Stato delle conversazioni Telegram dell'agente catalogo.
  * `pending` contiene l'azione in attesa di conferma esplicita dell'operatore.
  */
-export const whatsappSessions = sqliteTable("whatsapp_sessions", {
-  phone: text("phone").primaryKey(),
+export const telegramSessions = sqliteTable("telegram_sessions", {
+  chatId: text("chat_id").primaryKey(),
   /** ultimi messaggi scambiati, JSON, per dare contesto all'agente */
   history: text("history").notNull().default("[]"),
   /** azione proposta e non ancora confermata, JSON */
@@ -102,8 +102,8 @@ export const whatsappSessions = sqliteTable("whatsapp_sessions", {
     .$defaultFn(() => new Date()),
 });
 
-/** Id dei messaggi WhatsApp già elaborati: Meta rispedisce lo stesso webhook più volte. */
-export const whatsappEvents = sqliteTable("whatsapp_events", {
+/** Id degli update Telegram già elaborati: il webhook viene rispedito se tardiamo a rispondere. */
+export const telegramEvents = sqliteTable("telegram_events", {
   id: text("id").primaryKey(),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()

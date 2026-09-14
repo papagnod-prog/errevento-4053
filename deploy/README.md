@@ -32,6 +32,33 @@ indietro da solo. Per tornare alla versione precedente a mano:
 Prepara cartelle, servizio systemd, reverse proxy nginx, backup notturno e il
 comando `errevento-deploy`. È ripetibile senza danni.
 
+## Bot Telegram (gestione del catalogo)
+
+Il catalogo si modifica scrivendo al bot su Telegram: prezzi, nuovi articoli,
+foto, eliminazioni. Il bot chiede sempre conferma prima di salvare.
+Sul bot arrivano anche le richieste di informazioni inviate dal sito.
+
+Configurazione nel `.env`:
+
+    TELEGRAM_BOT_TOKEN=            # token dato da @BotFather
+    TELEGRAM_ADMIN_CHAT_IDS=       # id delle chat autorizzate, separati da virgola
+    TELEGRAM_WEBHOOK_SECRET=       # stringa casuale, protegge /api/telegram
+
+Dopo aver messo le tre voci nel `.env` e riavviato il servizio, si collega il
+bot al sito una volta sola:
+
+    cd /var/www/vhosts/errevento.it/app
+    bun --env-file=.env deploy/telegram-webhook.ts
+
+    bun --env-file=.env deploy/telegram-webhook.ts --stato     # verifica
+    bun --env-file=.env deploy/telegram-webhook.ts --rimuovi   # scollega
+
+Va rifatto solo se cambia il dominio (`WEBSITE_URL`) o il token del bot.
+Per sapere l'id di una chat: scrivere `/id` al bot.
+
+I clienti restano su WhatsApp: i pulsanti del sito aprono `wa.me` col numero
+impostato nel pannello (Impostazioni), che non ha niente a che vedere col bot.
+
 ## Copie di sicurezza
 
 Manuale, in qualsiasi momento:
@@ -61,6 +88,9 @@ Le voci che riguardano il server del cliente:
     MEDIA_DIR=/var/www/vhosts/errevento.it/media
     PORT=4210
     WEBSITE_URL=https://nuovo.errevento.it
+    TELEGRAM_BOT_TOKEN=
+    TELEGRAM_ADMIN_CHAT_IDS=
+    TELEGRAM_WEBHOOK_SECRET=
 
 `MEDIA_DIR` vuota riporta le immagini sullo storage remoto: serve solo
 nell'ambiente di sviluppo.

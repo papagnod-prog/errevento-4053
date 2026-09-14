@@ -6,7 +6,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3, BUCKET, signedGetUrl, deleteObject } from "./s3";
 
 /**
- * Immagini caricate dal pannello e dall'agente WhatsApp.
+ * Immagini caricate dal pannello e dall'agente Telegram.
  *
  * Due modi di conservarle, stesso URL pubblico (`/api/media/<chiave>`):
  * - MEDIA_DIR impostata -> i file stanno su disco, sul server del cliente;
@@ -107,7 +107,7 @@ export async function readMedia(key: string): Promise<Media | null> {
   return { kind: "file", file };
 }
 
-/** Salva direttamente dei byte (foto ricevute su WhatsApp) e restituisce l'URL pubblico. */
+/** Salva direttamente dei byte (foto ricevute in chat) e restituisce l'URL pubblico. */
 export async function storeMedia(key: string, bytes: Uint8Array, contentType: string) {
   if (!validKey(key)) throw new Error("chiave non valida");
   if (!localMedia) {

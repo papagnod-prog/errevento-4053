@@ -3,7 +3,7 @@ import { eq, inArray } from "drizzle-orm";
 import { base } from "../__core/app";
 import { db } from "../database";
 import * as schema from "../database/schema";
-import { notifyInquiry } from "../agent/whatsapp-handler";
+import { notifyInquiry } from "../agent/telegram-handler";
 
 const inputSchema = z.object({
   name: z.string().min(1).max(120),
@@ -82,7 +82,7 @@ export const inquiries = {
     if (input.phone) lines.push(`Telefono: ${input.phone}`);
     if (input.email) lines.push(`Email: ${input.email}`);
 
-    // Avviso su WhatsApp agli operatori: se fallisce, la richiesta resta salvata.
+    // Avviso su Telegram agli operatori: se fallisce, la richiesta resta salvata.
     void notifyInquiry({
       name: input.name,
       phone: input.phone,
