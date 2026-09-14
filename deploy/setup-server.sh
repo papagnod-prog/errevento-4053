@@ -87,8 +87,12 @@ mkdir -p "$DATA" "$MEDIA" "$BACKUP"
 chown -R "${DOM_USER}:${DOM_GROUP}" "$DATA" "$MEDIA" "$BACKUP" "$APP"
 c_ok "database in ${DATA}, immagini in ${MEDIA}, backup in ${BACKUP}"
 
+if [[ ! -f "${APP}/.env" && -f "${VHOST}/errevento.env" ]]; then
+  mv "${VHOST}/errevento.env" "${APP}/.env"
+  c_ok "configurazione spostata in ${APP}/.env"
+fi
 if [[ ! -f "${APP}/.env" ]]; then
-  c_err "manca ${APP}/.env — caricalo prima di continuare (vedi deploy/README.md)"
+  c_err "manca ${APP}/.env — caricalo in ${VHOST}/errevento.env oppure in ${APP}/.env"
   exit 1
 fi
 chmod 600 "${APP}/.env"
@@ -167,9 +171,20 @@ fi
 # ---------------------------------------------------------------------------
 step "7. Backup notturno del database (03:10, conserva 30 giorni)"
 # ---------------------------------------------------------------------------
+cat > "/usr/local/bin/${SERVICE}-backup" <<BK
+#!/usr/bin/env bash
+# copia di sicurezza del database, coerente anche a servizio attivo
+set -euo pipefail
+OUT="${BACKUP}/errevento-\$(date +%F).db"
+rm -f "\$OUT"
+${BUN} -e "const{Database}=require('bun:sqlite');const d=new Database('${DATA}/errevento.db',{readonly:true});d.exec(\`VACUUM INTO '\${OUT}'\`);d.close()"
+find "${BACKUP}" -name 'errevento-*.db' -mtime +30 -delete
+BK
+chmod 755 "/usr/local/bin/${SERVICE}-backup"
+
 cat > "/etc/cron.d/${SERVICE}-backup" <<CRON
-# backup giornaliero del database del sito (ore 03:10), conserva 30 giorni
-10 3 * * * root cp ${DATA}/errevento.db ${BACKUP}/errevento-\$(date +\\%F).db && find ${BACKUP} -name 'errevento-*.db' -mtime +30 -delete
+# copia di sicurezza del database ogni notte alle 03:10, conserva 30 giorni
+10 3 * * * root /usr/local/bin/${SERVICE}-backup >/dev/null 2>&1
 CRON
 chmod 644 "/etc/cron.d/${SERVICE}-backup"
 c_ok "backup impostato"
