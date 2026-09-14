@@ -73,6 +73,20 @@ Ripristino: fermare il servizio, sostituire il file del database, riavviare.
     chown errevento.it_5r61mzs7wbp:psacln /var/www/vhosts/errevento.it/data/errevento.db
     systemctl start errevento
 
+## Password del pannello dimenticata
+
+Normalmente la password si cambia dal pannello, in **Utenti**. Se nessuno
+riesce più a entrare, dal server:
+
+    cd /var/www/vhosts/errevento.it/app/packages/web
+    bun run db:reset-password info@errevento.it
+
+Stampa a schermo una password nuova. Per deciderla invece a mano:
+
+    bun run db:reset-password info@errevento.it 'PasswordNuova'
+
+Le sessioni aperte vengono chiuse: chi era dentro deve rientrare.
+
 ## Portare i dati da un altro ambiente
 
     bun --env-file=.env deploy/db-export.ts /percorso/errevento.db

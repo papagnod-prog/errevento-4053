@@ -15,7 +15,8 @@
     "db:generate": "bun --env-file=../../.env drizzle-kit generate",
     "db:migrate": "bun --env-file=../../.env drizzle-kit migrate",
     "db:push": "bun --env-file=../../.env drizzle-kit push",
-    "db:seed": "bun --env-file=../../.env src/api/database/seed.ts"
+    "db:seed": "bun --env-file=../../.env src/api/database/seed.ts",
+    "db:reset-password": "bun --env-file=../../.env src/api/database/reset-password.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1110.0",
