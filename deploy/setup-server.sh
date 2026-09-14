@@ -150,6 +150,11 @@ step "6. nginx (reverse proxy per ${DOMAIN})"
 NGINX_DIR="/var/www/vhosts/system/${DOMAIN}/conf"
 mkdir -p "$NGINX_DIR"
 cat > "${NGINX_DIR}/vhost_nginx.conf" <<NGINX
+# un solo indirizzo per il sito: www porta al dominio senza www
+if (\$host ~* ^www\\.(.+)\$) {
+	return 301 \$scheme://\$1\$request_uri;
+}
+
 location ~ ^/(.*)\$ {
 	proxy_pass http://127.0.0.1:${PORT};
 	proxy_http_version 1.1;
