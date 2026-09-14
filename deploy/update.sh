@@ -21,6 +21,7 @@ PORT="${PORT:-4210}"
 
 VHOST="/var/www/vhosts/${DOMAIN}"
 APP="${VHOST}/app"
+git config --global --add safe.directory "$APP" >/dev/null 2>&1 || true
 KEY="${VHOST}/.ssh/github_${SERVICE}"
 DB="${VHOST}/data/errevento.db"
 BACKUP="${VHOST}/backup"

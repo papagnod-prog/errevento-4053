@@ -37,6 +37,7 @@ step()  { printf "\n\033[1m== %s\033[0m\n" "$*"; }
 [[ $EUID -eq 0 ]] || { c_err "Va lanciato come root"; exit 1; }
 [[ -d "$VHOST" ]] || { c_err "Non trovo ${VHOST}"; exit 1; }
 
+git config --global --add safe.directory "$APP" >/dev/null 2>&1 || true
 DOM_USER="$(stat -c %U "${VHOST}/httpdocs")"
 DOM_GROUP="$(stat -c %G "${VHOST}/httpdocs")"
 run_as_user() {
