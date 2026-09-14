@@ -1,8 +1,6 @@
 import { z } from "zod";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { authed } from "../middleware/auth";
-import { s3, BUCKET, mediaUrl } from "../lib/s3";
+import { mediaUrl, uploadUrl } from "../lib/media";
 
 const ALLOWED = ["image/jpeg", "image/png", "image/webp", "image/avif"];
 const DIACRITICS = /\p{Diacritic}/gu;
@@ -32,11 +30,7 @@ export const uploads = {
         : "image/jpeg";
       const key = `catalogo/${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${safeName(input.filename)}`;
 
-      const url = await getSignedUrl(
-        s3,
-        new PutObjectCommand({ Bucket: BUCKET, Key: key, ContentType: contentType }),
-        { expiresIn: 600 },
-      );
+      const url = await uploadUrl(key, contentType);
 
       return { url, key, publicUrl: mediaUrl(key), contentType };
     }),

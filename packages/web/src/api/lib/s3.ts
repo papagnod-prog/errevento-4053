@@ -13,20 +13,6 @@ export const s3 = new S3Client({
 
 export const BUCKET = process.env.S3_BUCKET!;
 
-/** URL pubblico stabile servito dal nostro server (redirect firmato). */
-export function mediaUrl(key: string) {
-  return `/api/media/${key.split("/").map(encodeURIComponent).join("/")}`;
-}
-
-/** true per le immagini caricate dal pannello (su storage), false per quelle locali. */
-export function isMediaUrl(url: string) {
-  return url.startsWith("/api/media/");
-}
-
-export function keyFromMediaUrl(url: string) {
-  return decodeURIComponent(url.replace(/^\/api\/media\//, ""));
-}
-
 export function signedGetUrl(key: string, expiresIn = 3600) {
   return getSignedUrl(s3, new GetObjectCommand({ Bucket: BUCKET, Key: key }), {
     expiresIn,

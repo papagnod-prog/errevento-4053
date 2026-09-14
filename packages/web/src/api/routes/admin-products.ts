@@ -4,7 +4,7 @@ import { ORPCError } from "@orpc/server";
 import { authed } from "../middleware/auth";
 import { db } from "../database";
 import * as schema from "../database/schema";
-import { deleteObject, isMediaUrl, keyFromMediaUrl } from "../lib/s3";
+import { deleteMedia, isMediaUrl, keyFromMediaUrl } from "../lib/media";
 import {
   categorySlugsFor,
   nextId,
@@ -173,7 +173,7 @@ export const adminProducts = {
         .from(schema.productImages)
         .where(eq(schema.productImages.productId, input.id));
       for (const image of images) {
-        if (isMediaUrl(image.url)) await deleteObject(keyFromMediaUrl(image.url));
+        if (isMediaUrl(image.url)) await deleteMedia(keyFromMediaUrl(image.url));
       }
       await db
         .delete(schema.productImages)

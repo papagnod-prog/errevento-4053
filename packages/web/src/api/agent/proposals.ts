@@ -2,7 +2,7 @@ import { z } from "zod";
 import { eq, like, or } from "drizzle-orm";
 import { db } from "../database";
 import * as schema from "../database/schema";
-import { deleteObject, isMediaUrl, keyFromMediaUrl } from "../lib/s3";
+import { deleteMedia, isMediaUrl, keyFromMediaUrl } from "../lib/media";
 import {
   categorySlugsFor,
   nextId,
@@ -136,7 +136,7 @@ export async function applyProposal(proposal: Proposal) {
       .from(schema.productImages)
       .where(eq(schema.productImages.productId, proposal.id));
     for (const image of images) {
-      if (isMediaUrl(image.url)) await deleteObject(keyFromMediaUrl(image.url));
+      if (isMediaUrl(image.url)) await deleteMedia(keyFromMediaUrl(image.url));
     }
     await db.delete(schema.productImages).where(eq(schema.productImages.productId, proposal.id));
     await db

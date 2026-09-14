@@ -1,7 +1,7 @@
 import type { RouterClient } from "@orpc/server";
 import { createApp } from "./__core/app";
 import { auth } from "./auth";
-import { signedGetUrl } from "./lib/s3";
+import { readMedia, saveUpload } from "./lib/media";
 import { parseWebhook } from "./lib/whatsapp";
 import { clientIp, recordView } from "./lib/traffic";
 import { handleWhatsappMessage } from "./agent/whatsapp-handler";
@@ -42,16 +42,29 @@ const app = createApp(router);
 // Better Auth (accessi al pannello)
 app.on(["GET", "POST"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
-// Immagini caricate dal pannello: URL stabile -> redirect firmato sullo storage
+// Immagini caricate dal pannello: URL stabile -> file su disco (MEDIA_DIR)
+// oppure redirect firmato sullo storage S3.
 app.get("/api/media/*", async (c) => {
   const key = decodeURIComponent(c.req.path.replace("/api/media/", ""));
-  if (!key || key.includes("..")) return c.text("Not found", 404);
-  try {
-    const url = await signedGetUrl(key, 3600);
-    return c.redirect(url, 302);
-  } catch {
-    return c.text("Not found", 404);
-  }
+  const media = key ? await readMedia(key) : null;
+  if (!media) return c.text("Not found", 404);
+  if (media.kind === "redirect") return c.redirect(media.redirect, 302);
+  return new Response(media.file, {
+    headers: { "Cache-Control": "public, max-age=31536000, immutable" },
+  });
+});
+
+// Caricamento immagini in modalità locale: il pannello fa PUT su questo URL firmato.
+app.put("/api/media-upload/*", async (c) => {
+  const key = decodeURIComponent(c.req.path.replace("/api/media-upload/", ""));
+  const result = await saveUpload({
+    key,
+    expires: Number(c.req.query("expires") ?? 0),
+    signature: c.req.query("signature") ?? "",
+    body: await c.req.arrayBuffer(),
+  });
+  if (!result.ok) return c.text("Caricamento rifiutato", result.status);
+  return c.body(null, 204);
 });
 
 // Conteggio visite: chiamato dal sito a ogni cambio pagina.

@@ -1,7 +1,7 @@
 import { eq, inArray, sql, and, ne } from "drizzle-orm";
 import { db } from "../database";
 import * as schema from "../database/schema";
-import { deleteObject, isMediaUrl, keyFromMediaUrl } from "./s3";
+import { deleteMedia, isMediaUrl, keyFromMediaUrl } from "./media";
 
 const DIACRITICS = /\p{Diacritic}/gu;
 
@@ -102,7 +102,7 @@ export async function replaceRelations(
   const kept = new Set(images);
   for (const image of previous) {
     if (!kept.has(image.url) && isMediaUrl(image.url)) {
-      await deleteObject(keyFromMediaUrl(image.url));
+      await deleteMedia(keyFromMediaUrl(image.url));
     }
   }
 }

@@ -1,5 +1,4 @@
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { s3, BUCKET, mediaUrl } from "./s3";
+import { storeMedia } from "./media";
 
 /**
  * Client minimo per la WhatsApp Cloud API di Meta.
@@ -84,10 +83,7 @@ export async function saveIncomingMedia(mediaId: string) {
     const ext = mime === "image/png" ? "png" : mime === "image/webp" ? "webp" : "jpg";
     const key = `catalogo/${Date.now()}-${Math.random().toString(36).slice(2, 8)}-whatsapp.${ext}`;
 
-    await s3.send(
-      new PutObjectCommand({ Bucket: BUCKET, Key: key, Body: bytes, ContentType: mime }),
-    );
-    return mediaUrl(key);
+    return await storeMedia(key, bytes, mime);
   } catch {
     return null;
   }
