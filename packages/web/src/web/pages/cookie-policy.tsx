@@ -12,11 +12,11 @@ const BLOCKS: LegalBlock[] = [
   },
   {
     type: "p",
-    text: "Alcune delle finalità per le quali vengono impiegati strumenti di tracciamento potrebbero richiedere il consenso dell'utente. Se viene prestato il consenso, esso può essere revocato liberamente in qualsiasi momento seguendo le istruzioni contenute in questo documento.",
+    text: "In sintesi, e come spiegato in dettaglio nei paragrafi che seguono: le pagine pubbliche di questo sito non installano alcun cookie, né di prima né di terza parte, e non impiegano strumenti di tracciamento che richiedano il consenso dell'utente. Per questo motivo non viene mostrato alcun banner di consenso: non vi è alcun consenso da raccogliere.",
   },
   {
     type: "p",
-    text: "Questo sito utilizza strumenti di tracciamento gestiti direttamente dal Titolare (di “prima parte”) e strumenti di tracciamento che abilitano servizi forniti da terzi (di “terza parte”). La durata e la scadenza dei cookie possono variare a seconda di quanto impostato dal Titolare o da ciascun fornitore terzo; alcuni di essi scadono al termine della sessione di navigazione.",
+    text: "Alcune delle finalità per le quali vengono impiegati strumenti di tracciamento potrebbero richiedere il consenso dell'utente. Se viene prestato il consenso, esso può essere revocato liberamente in qualsiasi momento seguendo le istruzioni contenute in questo documento.",
   },
 
   {
@@ -25,39 +25,35 @@ const BLOCKS: LegalBlock[] = [
   },
   {
     type: "p",
-    text: "Questo sito utilizza cookie comunemente detti “tecnici” o altri strumenti di tracciamento analoghi per svolgere attività strettamente necessarie a garantire il funzionamento del servizio. Fra questi: la memorizzazione delle preferenze di navigazione e dei filtri del catalogo, la gestione della sessione di accesso all'area riservata al personale del negozio e le misure di sicurezza di base. Per questi strumenti non è richiesto il consenso dell'utente.",
+    text: "Le pagine pubbliche di questo sito — home, catalogo, schede prodotto, pagine informative e di contatto — non installano alcun cookie. Le preferenze di navigazione e i filtri del catalogo sono gestiti nella memoria del browser per la durata della visita, senza cookie e senza identificativi persistenti. Un unico cookie tecnico di sessione viene impostato esclusivamente nell'area riservata al personale del negozio (percorso /admin), al momento dell'accesso con le credenziali: è necessario al funzionamento dell'autenticazione, non raggiunge i visitatori del sito e per esso non è richiesto il consenso.",
   },
 
-  { type: "h2", text: "Altre attività che prevedono strumenti di tracciamento" },
-  { type: "h3", text: "Miglioramento dell'esperienza" },
+  { type: "h3", text: "Misurazione delle visite senza cookie" },
   {
     type: "p",
-    text: "Questo sito utilizza strumenti di tracciamento per fornire una user experience personalizzata, consentendo una migliore gestione delle impostazioni e l'interazione con reti e piattaforme esterne.",
+    text: "Per conoscere il numero di visite ricevute dalle pagine del catalogo, il Titolare utilizza un conteggio realizzato senza cookie e senza strumenti di tracciamento sul dispositivo dell'utente. Al momento della visita, indirizzo IP e tipo di browser vengono trasformati in un codice cifrato non reversibile, valido per la sola giornata in corso: il codice non permette di risalire alla persona, non viene incrociato con altri dati e non consente di riconoscere l'utente in visite successive. Non vengono conservati né l'indirizzo IP né altri dati identificativi, e la rilevazione non riguarda le richieste provenienti da motori di ricerca e altri sistemi automatici.",
   },
-  { type: "h3", text: "Visualizzazione di contenuti da piattaforme esterne" },
+
+  { type: "h2", text: "Contenuti e servizi di terze parti" },
+  { type: "h3", text: "Font di carattere (serviti da questo sito)" },
   {
     type: "p",
-    text: "Questo tipo di servizi permette di visualizzare contenuti ospitati su piattaforme esterne direttamente dalle pagine di questo sito, come mappe e font. Tali servizi potrebbero raccogliere dati sul traffico web relativi alle pagine in cui il servizio è installato, anche quando gli utenti non li utilizzano.",
+    text: "I caratteri tipografici utilizzati dalle pagine (Cormorant Garamond e Jost, distribuiti con licenza SIL Open Font License) sono ospitati direttamente sui server di questo sito e vengono caricati dal dominio errevento.it. Il browser dell'utente non contatta i server di Google Fonts né di altri fornitori esterni, e nessun dato — indirizzo IP compreso — viene per questo motivo trasmesso a terzi.",
   },
-  { type: "h3", text: "Google Fonts (Google Ireland Limited)" },
+  { type: "h3", text: "Google Maps (Google Ireland Limited) — caricamento su richiesta" },
   {
     type: "p",
-    text: "Google Fonts è un servizio di visualizzazione di stili di carattere. I font utilizzati da questo sito sono serviti localmente ove tecnicamente possibile; qualora vengano richiamati dai server di Google, il servizio raccoglie dati di utilizzo e strumenti di tracciamento. Luogo del trattamento: Irlanda e Stati Uniti.",
-  },
-  { type: "h3", text: "Google Maps (Google Ireland Limited)" },
-  {
-    type: "p",
-    text: "Le pagine di contatto possono contenere link o riquadri verso Google Maps per indicare la posizione del negozio. L'apertura della mappa può comportare l'installazione di cookie da parte di Google. Luogo del trattamento: Irlanda e Stati Uniti.",
+    text: "La pagina Contatti mostra la posizione del negozio tramite una mappa di Google Maps che non viene caricata automaticamente. Al suo posto è presente un riquadro con l'indirizzo e un pulsante: la mappa, e con essa il collegamento ai server di Google, si attiva soltanto se l'utente la richiede espressamente. Finché ciò non avviene, nessun dato viene trasmesso a Google. Se l'utente decide di caricare la mappa, o di seguire il link che apre Google Maps in una nuova finestra, il servizio può raccogliere dati di utilizzo e installare cookie propri, secondo le condizioni di Google. Luogo del trattamento: Irlanda e Stati Uniti. Informativa: https://policies.google.com/privacy",
   },
   {
     type: "p",
-    text: "Questo sito non utilizza strumenti di tracciamento per finalità di profilazione pubblicitaria o remarketing e non consente l'acquisto online, quindi non impiega cookie legati a carrello, pagamenti o account cliente.",
+    text: "Questo sito non utilizza strumenti di tracciamento per finalità di profilazione pubblicitaria, remarketing o statistiche di terze parti, non integra pulsanti social né widget di piattaforme esterne, e non consente l'acquisto online: non impiega quindi cookie legati a carrello, pagamenti o account cliente.",
   },
 
   { type: "h2", text: "Come gestire le preferenze e revocare il consenso" },
   {
     type: "p",
-    text: "Ove l'utilizzo di strumenti di tracciamento sia basato sul consenso, l'utente può fornire o revocare tale consenso impostando o aggiornando le proprie preferenze tramite il relativo pannello, se disponibile, oppure agendo direttamente sulle impostazioni del proprio browser.",
+    text: "Poiché questo sito non impiega strumenti di tracciamento subordinati al consenso, non è previsto alcun pannello delle preferenze da impostare o revocare. L'unico caso in cui l'utente sceglie è il caricamento della mappa nella pagina Contatti, che avviene solo su sua richiesta ed è limitato alla singola visualizzazione. Resta comunque possibile agire direttamente sulle impostazioni del proprio browser.",
   },
   { type: "h3", text: "Impostazioni relative agli strumenti di tracciamento" },
   {
@@ -129,7 +125,7 @@ export default function CookiePolicyPage() {
     <LegalPage
       eyebrow="Informativa"
       title="Cookie Policy"
-      updated="16 agosto 2026"
+      updated="21 settembre 2026"
       blocks={BLOCKS}
     />
   );

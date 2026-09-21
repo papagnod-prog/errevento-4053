@@ -1,6 +1,7 @@
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 import { InquiryForm } from "../components/inquiry-form";
+import { MapEmbed } from "../components/map-embed";
 import { Eyebrow, Ornament, SectionHeading } from "../components/ui/bits";
 import { useReveal } from "../hooks/use-reveal";
 import { useSiteSettings } from "../queries/settings";
@@ -65,7 +66,7 @@ export default function ContattiPage() {
               </div>
 
               <div className="flex gap-5">
-                <SiWhatsapp className="mt-1 h-5 w-5 shrink-0 text-accent" />
+                <SiWhatsapp className="mt-1 h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
                 <div>
                   <p className="eyebrow text-[10px]">WhatsApp</p>
                   <a
@@ -135,14 +136,8 @@ export default function ContattiPage() {
           title="Via Aldo Moro 97, Corato"
         />
         <div className="mx-auto max-w-[1240px] px-5 pb-24 lg:px-8 lg:pb-32">
-          <div className="reveal mt-10 overflow-hidden border border-border">
-            <iframe
-              title="Mappa di Errevento a Corato"
-              src="https://www.google.com/maps?q=Via%20Aldo%20Moro%2097,%2070033%20Corato%20BA&output=embed"
-              className="h-[380px] w-full lg:h-[460px]"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+          <div className="reveal mt-10">
+            <MapEmbed />
           </div>
         </div>
       </section>

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./fonts.css";
 
 @theme inline {
   --radius-sm: 2px;
@@ -45,8 +46,8 @@
   --secondary: #efdcd6;
   --secondary-foreground: #2e2622;
   --muted: #f3e9e4;
-  --muted-foreground: #8c7c75;
-  --accent: #a9736a;
+  --muted-foreground: #6b5b53;
+  --accent: #8a5149;
   --accent-foreground: #ffffff;
   --destructive: #b4453c;
   --border: #e7dad4;
@@ -55,8 +56,8 @@
   --blush: #efdcd6;
   --blush-deep: #e3c6be;
   --ink: #2e2622;
-  --gold: #b99364;
-  --whatsapp: #1eb257;
+  --gold: #9c7444;
+  --whatsapp: #128040;
 }
 
 @layer base {
@@ -65,6 +66,11 @@
   }
   html {
     scroll-behavior: smooth;
+  }
+  :focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.9);
   }
   body {
     @apply bg-background text-foreground;

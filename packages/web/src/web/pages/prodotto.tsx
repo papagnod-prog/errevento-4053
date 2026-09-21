@@ -195,7 +195,7 @@ export default function ProdottoPage() {
                 rel="noreferrer"
                 className="inline-flex items-center justify-center gap-2 border border-ink/50 px-8 py-3.5 font-body text-[11px] uppercase tracking-[0.24em] text-ink transition-colors hover:bg-ink hover:text-background"
               >
-                <SiWhatsapp className="h-4 w-4" /> Chat diretta
+                <SiWhatsapp className="h-4 w-4" aria-hidden="true" /> Chat diretta
               </a>
             </div>
             <p className="reveal mt-4 text-xs leading-relaxed text-muted-foreground">

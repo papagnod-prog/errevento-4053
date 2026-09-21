@@ -88,7 +88,7 @@ export function SiteFooter() {
                 aria-label="WhatsApp"
                 className="text-ink/70 transition-colors hover:text-accent"
               >
-                <SiWhatsapp className="h-[18px] w-[18px]" />
+                <SiWhatsapp className="h-[18px] w-[18px]" aria-hidden="true" />
               </a>
               <a
                 href="https://www.instagram.com/errevento/"
@@ -97,7 +97,7 @@ export function SiteFooter() {
                 aria-label="Instagram"
                 className="text-ink/70 transition-colors hover:text-accent"
               >
-                <SiInstagram className="h-[18px] w-[18px]" />
+                <SiInstagram className="h-[18px] w-[18px]" aria-hidden="true" />
               </a>
               <a
                 href="https://www.facebook.com/errevento/"
@@ -106,7 +106,7 @@ export function SiteFooter() {
                 aria-label="Facebook"
                 className="text-ink/70 transition-colors hover:text-accent"
               >
-                <SiFacebook className="h-[18px] w-[18px]" />
+                <SiFacebook className="h-[18px] w-[18px]" aria-hidden="true" />
               </a>
             </div>
           </div>

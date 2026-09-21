@@ -160,7 +160,7 @@ function Values() {
           <div className="absolute -bottom-8 -right-4 hidden w-40 border-8 border-background lg:block">
             <img
               src="/images/site/IMG_20220128_190222.jpg"
-              alt=""
+              alt="Dettaglio di un allestimento floreale curato da Errevento"
               loading="lazy"
               className="aspect-square w-full object-cover"
             />

@@ -55,7 +55,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         aria-label="Scrivici su WhatsApp"
         className="fixed bottom-6 right-5 z-80 flex h-13 w-13 items-center justify-center rounded-full bg-whatsapp text-white shadow-lg shadow-ink/20 transition-transform duration-300 hover:scale-105 lg:bottom-8 lg:right-8"
       >
-        <SiWhatsapp className="h-6 w-6" />
+        <SiWhatsapp className="h-6 w-6" aria-hidden="true" />
       </a>
     </div>
   );

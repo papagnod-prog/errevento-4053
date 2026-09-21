@@ -73,22 +73,27 @@ const BLOCKS: LegalBlock[] = [
   { type: "h3", text: "Modulo di richiesta informazioni" },
   {
     type: "p",
-    text: "L'utente, compilando il modulo presente sulle pagine di prodotto e nella pagina Contatti, acconsente al loro utilizzo per rispondere alla richiesta di informazioni, di preventivo o di appuntamento. I dati inseriti (nome, contatto telefonico o email, tipo di evento e messaggio) sono salvati nel database del sito e resi disponibili al solo personale del Titolare.",
+    text: "Compilando il modulo presente sulle pagine di prodotto e nella pagina Contatti, l'utente trasmette al Titolare i dati necessari a ricevere una risposta: nome, contatto telefonico o email e, se indicati, tipo di evento, data, quantità e messaggio. I dati sono salvati nel database del sito e resi disponibili al solo personale del Titolare. La base giuridica del trattamento è l'esecuzione di misure precontrattuali adottate su richiesta dell'interessato (art. 6, par. 1, lett. b del Regolamento): per rispondere a una richiesta di informazioni, di preventivo o di appuntamento non è quindi necessario alcun consenso, e non ne viene richiesto alcuno. Il solo campo obbligatorio è il nome; gli altri dati sono facoltativi e la loro mancanza comporta unicamente la difficoltà di ricontattare l'utente. Le richieste sono conservate per il tempo necessario a gestire la trattativa e i conseguenti obblighi amministrativi, e possono essere cancellate su richiesta dell'interessato.",
   },
   { type: "h3", text: "Contatto tramite WhatsApp" },
   {
     type: "p",
     text: "Il sito mette a disposizione pulsanti che aprono una conversazione WhatsApp con un messaggio precompilato. Avviando la conversazione, il trattamento dei dati di messaggistica è regolato anche dall'informativa privacy di WhatsApp Ireland Limited, di cui l'utente è invitato a prendere visione. Il Titolare tratta i messaggi ricevuti al solo fine di rispondere alla richiesta.",
   },
-  { type: "h3", text: "Visualizzazione di contenuti da piattaforme esterne" },
+  { type: "h3", text: "Misurazione delle visite senza cookie" },
   {
     type: "p",
-    text: "Questo tipo di servizi permette di visualizzare contenuti ospitati su piattaforme esterne direttamente dalle pagine di questo sito e di interagire con essi. Tali servizi potrebbero raccogliere dati sul traffico web relativi alle pagine in cui il servizio è installato, anche quando gli utenti non li utilizzano.",
+    text: "Il Titolare rileva il numero di visite ricevute dalle pagine del catalogo senza installare cookie e senza strumenti di tracciamento sul dispositivo dell'utente. Al momento della visita, indirizzo IP e tipo di browser vengono trasformati in un codice cifrato non reversibile, valido per la sola giornata in corso: il codice non consente di risalire alla persona né di riconoscere l'utente in visite successive, e né l'indirizzo IP né altri dati identificativi vengono conservati. La base giuridica è il legittimo interesse del Titolare a conoscere l'andamento delle visite in forma aggregata (art. 6, par. 1, lett. f del Regolamento).",
   },
-  { type: "h3", text: "Google Fonts (Google Ireland Limited)" },
+  { type: "h3", text: "Font di carattere serviti da questo sito" },
   {
     type: "p",
-    text: "Google Fonts è un servizio di visualizzazione di stili di carattere. I font utilizzati da questo sito sono serviti localmente ove tecnicamente possibile; qualora vengano richiamati dai server di Google, il servizio raccoglie dati di utilizzo e strumenti di tracciamento. Luogo del trattamento: Irlanda e Stati Uniti.",
+    text: "I caratteri tipografici utilizzati dalle pagine (Cormorant Garamond e Jost, distribuiti con licenza SIL Open Font License) sono ospitati direttamente sui server di questo sito. Il browser dell'utente non contatta i server di Google Fonts né di altri fornitori esterni: nessun dato, indirizzo IP compreso, viene per questo motivo trasmesso a terzi.",
+  },
+  { type: "h3", text: "Google Maps (Google Ireland Limited) — caricamento su richiesta" },
+  {
+    type: "p",
+    text: "La pagina Contatti mostra la posizione del negozio tramite una mappa di Google Maps che non viene caricata automaticamente: al suo posto è presente un riquadro con l'indirizzo e un pulsante, e il collegamento ai server di Google si attiva soltanto se l'utente lo richiede espressamente. Finché ciò non avviene, nessun dato viene trasmesso a Google. Se l'utente carica la mappa, o segue il link che apre Google Maps in una nuova finestra, il servizio può raccogliere dati di utilizzo e installare cookie propri. Luogo del trattamento: Irlanda e Stati Uniti. Informativa: https://policies.google.com/privacy",
   },
   { type: "h3", text: "Hosting e infrastruttura" },
   {
@@ -196,7 +201,7 @@ export default function PrivacyPage() {
     <LegalPage
       eyebrow="Informativa"
       title="Privacy Policy"
-      updated="16 agosto 2026"
+      updated="21 settembre 2026"
       blocks={BLOCKS}
     />
   );

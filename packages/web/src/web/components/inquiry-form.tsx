@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "wouter";
 import { Check, Loader2, X } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 import { useCreateInquiry } from "../queries/inquiries";
@@ -79,7 +80,7 @@ export function InquiryForm({
           rel="noreferrer"
           className="mt-6 inline-flex items-center gap-2 border border-whatsapp px-7 py-3 text-[11px] uppercase tracking-[0.24em] text-whatsapp transition-colors hover:bg-whatsapp hover:text-white"
         >
-          <SiWhatsapp className="h-4 w-4" /> Apri WhatsApp
+          <SiWhatsapp className="h-4 w-4" aria-hidden="true" /> Apri WhatsApp
         </a>
       </div>
     );
@@ -179,12 +180,19 @@ export function InquiryForm({
           </>
         ) : (
           <>
-            <SiWhatsapp className="h-4 w-4" /> Invia su WhatsApp
+            <SiWhatsapp className="h-4 w-4" aria-hidden="true" /> Invia su WhatsApp
           </>
         )}
       </ActionButton>
       <p className="mt-4 text-center text-xs leading-relaxed text-muted-foreground">
         Nessun acquisto online: riceverai risposta in chat con disponibilità e tempi.
+      </p>
+      <p className="mt-2 text-center text-xs leading-relaxed text-muted-foreground">
+        Inviando la richiesta dichiari di aver letto l'
+        <Link to="/privacy-policy" className="link-underline text-accent">
+          Informativa privacy
+        </Link>
+        . Usiamo i tuoi dati solo per risponderti.
       </p>
     </form>
   );
