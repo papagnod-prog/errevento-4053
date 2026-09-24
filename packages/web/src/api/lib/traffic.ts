@@ -44,12 +44,23 @@ export async function recordView(input: { path: string; ip: string; userAgent: s
   }
 }
 
-/** IP del visitatore dietro il proxy di Cloudflare. */
+/**
+ * Indirizzo del visitatore, letto da dietro il proxy che sta davanti al sito.
+ *
+ * L'ordine conta, ed è una questione di sicurezza. Chi invia la richiesta può
+ * scrivere quello che vuole in X-Forwarded-For: fidandosi di quella per prima,
+ * bastava cambiarla a ogni invio per far credere al sito di essere ogni volta
+ * una persona diversa, e i limiti per indirizzo non fermavano più nessuno.
+ *
+ * X-Real-IP la scrive il nostro nginx con l'indirizzo da cui la richiesta
+ * arriva davvero, sovrascrivendo qualunque valore mandato da fuori: si legge
+ * quella. Le altre restano come ripiego per gli ambienti dove nginx non c'è.
+ */
 export function clientIp(headers: Headers) {
   return (
+    headers.get("x-real-ip") ??
     headers.get("cf-connecting-ip") ??
     headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    headers.get("x-real-ip") ??
     "0.0.0.0"
   );
 }
