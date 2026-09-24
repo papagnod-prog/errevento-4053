@@ -192,6 +192,7 @@ export const inquiries = {
         quantity: input.quantity,
         message: input.message,
         productName,
+        source: input.source,
       }).catch((error) => {
         console.error("[inquiries] notifyInquiry", error);
       });

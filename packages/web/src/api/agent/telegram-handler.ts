@@ -223,7 +223,30 @@ export async function handleTelegramMessage(input: {
   await sendText(input.chatId, message);
 }
 
-/** Avvisa gli operatori quando arriva una richiesta di informazioni dal sito. */
+/**
+ * Da quale modulo del sito arriva la richiesta.
+ * Serve a sapere subito dove stava il cliente quando ha scritto: da una scheda
+ * articolo si risponde sul pezzo, dalla pagina Allestimenti o Wedding planner
+ * si risponde sul servizio.
+ */
+const ORIGINE: Record<string, string> = {
+  prodotto: "scheda articolo",
+  allestimenti: "pagina Allestimenti",
+  contatti: "pagina Contatti",
+  "wedding-planner": "pagina Wedding planner",
+};
+
+export function origineModulo(source: string) {
+  return ORIGINE[source] ?? source ?? "non indicata";
+}
+
+/**
+ * Avvisa gli operatori quando arriva una richiesta di informazioni dal sito.
+ *
+ * Fuori dalla produzione l'avviso parte marcato come prova: il sito di sviluppo
+ * usa lo stesso bot e la stessa chat, e senza il marchio una richiesta finta di
+ * collaudo sembra identica a quella di un cliente vero.
+ */
 export async function notifyInquiry(inquiry: {
   name: string;
   phone: string;
@@ -233,10 +256,15 @@ export async function notifyInquiry(inquiry: {
   quantity: string;
   message: string;
   productName: string;
+  source: string;
 }) {
+  const prova = process.env.NODE_ENV !== "production";
+
   const lines = [
+    prova ? "⚠️ *PROVA TECNICA — sito di sviluppo, non un cliente vero*" : "",
     "*Nuova richiesta dal sito*",
-    inquiry.productName ? `Articolo: ${inquiry.productName}` : "Richiesta generica",
+    `Modulo: ${origineModulo(inquiry.source)}`,
+    inquiry.productName ? `Articolo: ${inquiry.productName}` : "",
     `Da: ${inquiry.name}`,
     inquiry.phone ? `Telefono: ${inquiry.phone}` : "",
     inquiry.email ? `Email: ${inquiry.email}` : "",

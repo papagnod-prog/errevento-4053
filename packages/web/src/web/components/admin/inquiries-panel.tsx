@@ -14,6 +14,14 @@ function formatDate(value: unknown) {
   });
 }
 
+/** Da quale modulo del sito è partita la richiesta, scritto per intero. */
+const ORIGINE: Record<string, string> = {
+  prodotto: "da scheda articolo",
+  allestimenti: "da pagina Allestimenti",
+  contatti: "da pagina Contatti",
+  "wedding-planner": "da pagina Wedding planner",
+};
+
 /** Una riga così come arriva dal pannello, senza ridichiararne i campi. */
 type Inquiry = NonNullable<ReturnType<typeof useAdminInquiries>["data"]>[number];
 
@@ -31,7 +39,7 @@ function InquiryRow({
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <h3 className="font-display text-xl text-ink">{row.name}</h3>
-          <span className="eyebrow text-[9px]">{row.source}</span>
+          <span className="eyebrow text-[9px]">{ORIGINE[row.source] ?? row.source}</span>
           <span className="text-xs text-muted-foreground">{formatDate(row.createdAt)}</span>
         </div>
         {row.flagged && row.flagReason ? (
