@@ -155,6 +155,27 @@ if (\$host ~* ^www\\.(.+)\$) {
 	return 301 \$scheme://\$1\$request_uri;
 }
 
+# Intestazioni di sicurezza: valgono per ogni risposta del sito, comprese
+# le pagine e le immagini, perché le pagine non passano dall'applicazione.
+# "always" le mette anche sulle pagine di errore.
+#
+# Strict-Transport-Security: il browser, dopo la prima visita, usa solo
+#   https per un anno. Senza includeSubDomains, per non imporre https ai
+#   sottodomini di servizio (posta, webmail) gestiti da Plesk.
+# X-Frame-Options: nessuno può incorniciare il sito dentro un altro sito
+#   per far cliccare l'utente su cose che non vede (clickjacking).
+# X-Content-Type-Options: il browser non prova a indovinare il tipo di un
+#   file, si fida solo di quello dichiarato.
+# Referrer-Policy: verso siti esterni si manda solo il dominio, non la
+#   pagina esatta che la persona stava guardando.
+# Permissions-Policy: il sito non chiede posizione, telecamera, microfono,
+#   pagamenti o dispositivi usb, quindi glielo si vieta del tutto.
+add_header Strict-Transport-Security "max-age=31536000" always;
+add_header X-Frame-Options "SAMEORIGIN" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+add_header Permissions-Policy "geolocation=(), camera=(), microphone=(), payment=(), usb=()" always;
+
 location ~ ^/(.*)\$ {
 	proxy_pass http://127.0.0.1:${PORT};
 	proxy_http_version 1.1;

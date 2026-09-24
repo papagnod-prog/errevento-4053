@@ -46,6 +46,14 @@ const BLOCKS: LegalBlock[] = [
     text: "La pagina Contatti mostra la posizione del negozio tramite una mappa di Google Maps che non viene caricata automaticamente. Al suo posto è presente un riquadro con l'indirizzo e un pulsante: la mappa, e con essa il collegamento ai server di Google, si attiva soltanto se l'utente la richiede espressamente. Finché ciò non avviene, nessun dato viene trasmesso a Google. Se l'utente decide di caricare la mappa, o di seguire il link che apre Google Maps in una nuova finestra, il servizio può raccogliere dati di utilizzo e installare cookie propri, secondo le condizioni di Google. Luogo del trattamento: Irlanda e Stati Uniti. Informativa: https://policies.google.com/privacy",
   },
   {
+    type: "h3",
+    text: "Cloudflare Turnstile (Cloudflare, Inc.) — caricamento all'apertura del modulo",
+  },
+  {
+    type: "p",
+    text: "Il modulo di richiesta informazioni è protetto da Cloudflare Turnstile, un controllo antiabuso che serve a distinguere le richieste inviate da una persona da quelle inviate da programmi automatici. Il controllo non viene caricato insieme alle pagine: il browser contatta i server di Cloudflare soltanto nel momento in cui l'utente apre il modulo. Per eseguire la verifica, Cloudflare può depositare sul dispositivo un identificativo tecnico di breve durata e trattare l'indirizzo IP e informazioni tecniche su browser e dispositivo. Si tratta di uno strumento strettamente necessario a proteggere un servizio richiesto dall'utente, utilizzato per questa sola finalità e non per profilazione o pubblicità: per questo non è subordinato al consenso. Se l'utente non apre il modulo, nessun dato viene trasmesso a Cloudflare. Luogo del trattamento: Stati Uniti e Unione Europea. Informativa: https://www.cloudflare.com/privacypolicy/",
+  },
+  {
     type: "p",
     text: "Questo sito non utilizza strumenti di tracciamento per finalità di profilazione pubblicitaria, remarketing o statistiche di terze parti, non integra pulsanti social né widget di piattaforme esterne, e non consente l'acquisto online: non impiega quindi cookie legati a carrello, pagamenti o account cliente.",
   },
@@ -125,7 +133,7 @@ export default function CookiePolicyPage() {
     <LegalPage
       eyebrow="Informativa"
       title="Cookie Policy"
-      updated="21 settembre 2026"
+      updated="24 settembre 2026"
       blocks={BLOCKS}
     />
   );

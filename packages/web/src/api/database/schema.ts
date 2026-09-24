@@ -74,6 +74,13 @@ export const inquiries = sqliteTable("inquiries", {
   productId: integer("product_id"),
   productName: text("product_name").notNull().default(""),
   source: text("source").notNull().default("prodotto"),
+  /**
+   * Richiesta che le difese del modulo ritengono automatica. Non viene scartata:
+   * resta nel pannello in una sezione a parte e non fa scattare l'avviso Telegram.
+   */
+  flagged: integer("flagged", { mode: "boolean" }).notNull().default(false),
+  /** Perché è stata messa da parte, in parole leggibili nel pannello. */
+  flagReason: text("flag_reason").notNull().default(""),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),

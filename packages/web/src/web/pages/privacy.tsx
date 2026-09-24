@@ -73,7 +73,20 @@ const BLOCKS: LegalBlock[] = [
   { type: "h3", text: "Modulo di richiesta informazioni" },
   {
     type: "p",
-    text: "Compilando il modulo presente sulle pagine di prodotto e nella pagina Contatti, l'utente trasmette al Titolare i dati necessari a ricevere una risposta: nome, contatto telefonico o email e, se indicati, tipo di evento, data, quantità e messaggio. I dati sono salvati nel database del sito e resi disponibili al solo personale del Titolare. La base giuridica del trattamento è l'esecuzione di misure precontrattuali adottate su richiesta dell'interessato (art. 6, par. 1, lett. b del Regolamento): per rispondere a una richiesta di informazioni, di preventivo o di appuntamento non è quindi necessario alcun consenso, e non ne viene richiesto alcuno. Il solo campo obbligatorio è il nome; gli altri dati sono facoltativi e la loro mancanza comporta unicamente la difficoltà di ricontattare l'utente. Le richieste sono conservate per il tempo necessario a gestire la trattativa e i conseguenti obblighi amministrativi, e possono essere cancellate su richiesta dell'interessato.",
+    text: "Compilando il modulo presente sulle pagine di prodotto e nella pagina Contatti, l'utente trasmette al Titolare i dati necessari a ricevere una risposta: nome, contatto telefonico o email e, se indicati, tipo di evento, data, quantità e messaggio. I dati sono salvati nel database del sito e resi disponibili al solo personale del Titolare. La base giuridica del trattamento è l'esecuzione di misure precontrattuali adottate su richiesta dell'interessato (art. 6, par. 1, lett. b del Regolamento): per rispondere a una richiesta di informazioni, di preventivo o di appuntamento non è quindi necessario alcun consenso, e non ne viene richiesto alcuno. Sono obbligatori il nome e almeno uno fra numero di telefono e indirizzo email, indispensabili per poter rispondere; gli altri dati sono facoltativi e la loro mancanza non comporta alcuna conseguenza. Le richieste sono conservate per il tempo necessario a gestire la trattativa e i conseguenti obblighi amministrativi, e possono essere cancellate su richiesta dell'interessato.",
+  },
+  { type: "h3", text: "Protezione del modulo dagli invii automatici" },
+  {
+    type: "p",
+    text: "Per impedire che il modulo venga riempito da programmi automatici, il sito verifica alcuni elementi tecnici dell'invio — il tempo impiegato a compilare il modulo, un codice di validità generato all'apertura del modulo stesso, il numero di invii provenienti dal medesimo indirizzo IP in un intervallo di tempo e la coerenza formale dei dati inseriti. Gli invii che risultano sospetti non vengono scartati: sono conservati e contrassegnati, così che il Titolare possa comunque esaminarli e, se si tratta di una richiesta autentica, rispondere. L'indirizzo IP è utilizzato solo per questo controllo, non viene conservato insieme alla richiesta e non serve a identificare la persona. La base giuridica è il legittimo interesse del Titolare a proteggere il sito da usi abusivi e a mantenere il servizio funzionante (art. 6, par. 1, lett. f del Regolamento).",
+  },
+  {
+    type: "h3",
+    text: "Cloudflare Turnstile (Cloudflare, Inc.) — caricamento all'apertura del modulo",
+  },
+  {
+    type: "p",
+    text: "Il modulo di richiesta informazioni è protetto da Cloudflare Turnstile, un controllo antiabuso che verifica che l'invio provenga da una persona e non da un programma automatico. Il controllo non viene caricato con le pagine del sito: si attiva soltanto quando l'utente apre il modulo, e solo in quel momento il browser contatta i server di Cloudflare. Per svolgere la verifica, Cloudflare tratta l'indirizzo IP, informazioni tecniche sul browser e sul dispositivo e i movimenti compiuti all'interno del riquadro di verifica, e può depositare sul dispositivo un identificativo tecnico di breve durata legato esclusivamente a questa finalità. Cloudflare dichiara di non utilizzare tali dati per profilare gli utenti né per finalità pubblicitarie. Trattandosi di uno strumento strettamente necessario a proteggere un servizio richiesto dall'utente, la base giuridica è il legittimo interesse del Titolare alla sicurezza del sito (art. 6, par. 1, lett. f del Regolamento). Se il controllo non è disponibile, il modulo resta comunque utilizzabile. Luogo del trattamento: Stati Uniti e Unione Europea. Informativa: https://www.cloudflare.com/privacypolicy/",
   },
   { type: "h3", text: "Contatto tramite WhatsApp" },
   {
@@ -201,7 +214,7 @@ export default function PrivacyPage() {
     <LegalPage
       eyebrow="Informativa"
       title="Privacy Policy"
-      updated="21 settembre 2026"
+      updated="24 settembre 2026"
       blocks={BLOCKS}
     />
   );

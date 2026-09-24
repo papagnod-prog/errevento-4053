@@ -1,7 +1,9 @@
 import type { RouterClient } from "@orpc/server";
+import { Hono } from "hono";
 import { createApp } from "./__core/app";
 import { auth } from "./auth";
 import { readMedia, saveUpload } from "./lib/media";
+import { apiRateLimit } from "./lib/security";
 import { parseUpdate } from "./lib/telegram";
 import { clientIp, recordView } from "./lib/traffic";
 import { handleTelegramMessage } from "./agent/telegram-handler";
@@ -111,4 +113,11 @@ app.post("/api/telegram", async (c) => {
   return c.body(null, 200);
 });
 
-export default app;
+// Il limite di richieste per IP deve valere anche per le procedure /api/rpc/*,
+// che createApp registra al suo interno: si mette davanti all'applicazione
+// invece che dentro, così nessuna rotta lo scavalca.
+const api = new Hono();
+api.use("*", apiRateLimit);
+api.all("*", (c) => app.fetch(c.req.raw));
+
+export default api;

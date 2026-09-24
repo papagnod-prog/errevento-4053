@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { Check, Loader2, X } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
-import { useCreateInquiry } from "../queries/inquiries";
+import { useCreateInquiry, useFormToken } from "../queries/inquiries";
 import { EVENT_TYPES } from "../lib/site";
 import { ActionButton, Field, Ornament, inputClass } from "./ui/bits";
+import { Turnstile, captchaEnabled } from "./turnstile";
 import { cn } from "../lib/utils";
 
 export type InquirySource = "prodotto" | "allestimenti" | "contatti" | "wedding-planner";
@@ -26,7 +27,22 @@ const emptyForm = {
   eventDate: "",
   quantity: "",
   message: "",
+  /** Campo trappola: invisibile a chi guarda, riempito solo dai programmi. */
+  website: "",
 };
+
+/**
+ * Messaggio da mostrare quando l'invio non va a buon fine. Le spiegazioni
+ * scritte dal server (contatto mancante, numero sbagliato, troppe richieste)
+ * arrivano già pronte; tutto il resto diventa un avviso generico.
+ */
+function errorMessage(error: unknown) {
+  const text = error instanceof Error ? error.message.trim() : "";
+  const technical = !text || text.length > 200 || /fetch|network|json|orpc|internal/i.test(text);
+  return technical
+    ? "Invio non riuscito. Riprova o scrivici direttamente su WhatsApp."
+    : text;
+}
 
 /** Form breve che salva la richiesta e apre WhatsApp con il messaggio già scritto */
 export function InquiryForm({
@@ -42,17 +58,36 @@ export function InquiryForm({
     eventType: defaultEventType ?? "",
   });
   const [sentUrl, setSentUrl] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState("");
+  const [warning, setWarning] = useState("");
   const create = useCreateInquiry();
+  const formToken = useFormToken();
+
+  const hasContact = Boolean(form.phone.trim() || form.email.trim());
+  const canSend = Boolean(form.name.trim()) && hasContact && !create.isPending;
 
   const set = (key: keyof typeof emptyForm) => (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
-  ) => setForm((prev) => ({ ...prev, [key]: event.target.value }));
+  ) => {
+    setWarning("");
+    setForm((prev) => ({ ...prev, [key]: event.target.value }));
+  };
 
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
     if (!form.name.trim() || create.isPending) return;
+    if (!hasContact) {
+      setWarning("Lascia un telefono o un'email, altrimenti non possiamo risponderti.");
+      return;
+    }
     create.mutate(
-      { ...form, productId, source },
+      {
+        ...form,
+        productId,
+        source,
+        formToken: formToken.data?.token ?? "",
+        captchaToken,
+      },
       {
         onSuccess: (data) => {
           setSentUrl(data.whatsappUrl);
@@ -87,7 +122,7 @@ export function InquiryForm({
   }
 
   return (
-    <form onSubmit={submit} className="text-left">
+    <form onSubmit={submit} className="relative text-left">
       {productName ? (
         <p className="mb-6 border-b border-border pb-4 text-sm text-muted-foreground">
           Richiesta per <span className="text-ink">{productName}</span>
@@ -104,13 +139,14 @@ export function InquiryForm({
             placeholder="Il tuo nome"
           />
         </Field>
-        <Field label="Telefono">
+        <Field label="Telefono *" hint="Telefono oppure email: almeno uno dei due.">
           <input
             value={form.phone}
             onChange={set("phone")}
             className={inputClass}
             placeholder="339 000 0000"
             inputMode="tel"
+            autoComplete="tel"
           />
         </Field>
         <Field label="Tipo di evento">
@@ -139,13 +175,14 @@ export function InquiryForm({
             placeholder="es. 80"
           />
         </Field>
-        <Field label="Email">
+        <Field label="Email *">
           <input
             type="email"
             value={form.email}
             onChange={set("email")}
             className={inputClass}
             placeholder="nome@email.it"
+            autoComplete="email"
           />
         </Field>
       </div>
@@ -162,16 +199,36 @@ export function InquiryForm({
         </Field>
       </div>
 
-      {create.isError ? (
-        <p className="mt-4 text-sm text-destructive">
-          Invio non riuscito. Riprova o scrivici direttamente su WhatsApp.
+      {/*
+        Campo trappola: fuori dallo schermo e fuori dal percorso di tabulazione,
+        nessuna persona lo vede né lo compila. I programmi automatici riempiono
+        tutto quello che trovano nel modulo e si tradiscono così.
+      */}
+      <div aria-hidden="true" className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
+        <label>
+          Sito web
+          <input
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={form.website}
+            onChange={set("website")}
+          />
+        </label>
+      </div>
+
+      {captchaEnabled ? <Turnstile onToken={setCaptchaToken} /> : null}
+
+      {warning || create.isError ? (
+        <p className="mt-4 text-sm text-destructive" role="alert">
+          {warning || errorMessage(create.error)}
         </p>
       ) : null}
 
       <ActionButton
         type="submit"
         variant="whatsapp"
-        disabled={create.isPending || !form.name.trim()}
+        disabled={!canSend}
         className="mt-8 w-full"
       >
         {create.isPending ? (
@@ -193,6 +250,7 @@ export function InquiryForm({
           Informativa privacy
         </Link>
         . Usiamo i tuoi dati solo per risponderti.
+        {captchaEnabled ? " Questo modulo è protetto da Cloudflare Turnstile." : ""}
       </p>
     </form>
   );
